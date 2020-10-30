@@ -10,7 +10,7 @@ const difficultySelect = document.getElementById('difficulty');
 
 let initialTime = localStorage.getItem("initialTime") ? Number(localStorage.getItem("initialTime")) : 10 ;
 let score = localStorage.getItem("score") ? Number(localStorage.getItem("score")) : 0;
-let difficulty = localStorage.getItem("difficulty") ? localStorage.getItem("difficulty") : "easy"
+let difficulty = localStorage.getItem("difficulty") ?? "easy";
 let increaseInTimeByDifficulty = 5;
 
 timeEl.textContent = `${initialTime}s`;
