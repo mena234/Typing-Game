@@ -7,6 +7,7 @@ const settingsBtn = document.getElementById('settings-btn');
 const settings = document.getElementById('settings');
 const settingsForm = document.getElementById('settings-form');
 const difficultySelect = document.getElementById('difficulty');
+const refreshEl = document.getElementById('refresh');
 
 let initialTime = localStorage.getItem("initialTime") ? Number(localStorage.getItem("initialTime")) : 10 ;
 let score = localStorage.getItem("score") ? Number(localStorage.getItem("score")) : 0;
@@ -63,15 +64,6 @@ const showRandomWordPipeline = pipe(
   showRandomWord
 );
 
-const checkWordSanitary = (e) => {
-  if (e.target.value === word.innerText) {
-    resetScore();
-    resetTime();
-    showRandomWordPipeline(words);
-    e.target.value = "";
-  }
-}
-
 const resetTime = () => {
   initialTime += increaseInTimeByDifficulty;
   localStorage.setItem("initialTime", initialTime);
@@ -83,11 +75,26 @@ const resetScore = () => {
   scoreEl.textContent = score;
 }
 
+const resetDifficulty = (selectValue, timeIncrease) => {
+  localStorage.setItem("difficulty", selectValue);
+  increaseInTimeByDifficulty = timeIncrease;
+  localStorage.setItem("increaseInTimeByDifficulty", timeIncrease);
+}
+
 const resetScoreAndTimeForNewGame = () => {
   setTimeout(() => {
     localStorage.setItem("initialTime", 10);
     localStorage.setItem("score", 0);    
   });
+}
+
+const checkWordSanitary = (e) => {
+  if (e.target.value === word.innerText) {
+    resetScore();
+    resetTime();
+    showRandomWordPipeline(words);
+    e.target.value = "";
+  }
 }
 
 const gameOver = () => {
@@ -121,23 +128,18 @@ text.addEventListener("input", e => {
 });
 
 difficultySelect.addEventListener("change", e => {
-  switch (e.target.value) {
+  selectValue = e.target.value;
+  switch (selectValue) {
     case "easy":
-      localStorage.setItem("difficulty", "easy");
-      increaseInTimeByDifficulty = 5
-      localStorage.setItem("increaseInTimeByDifficulty", 5);
+      resetDifficulty(selectValue, 5);
       break;
   
     case "medium":
-      localStorage.setItem("difficulty", "medium");
-      increaseInTimeByDifficulty = 3
-      localStorage.setItem("increaseInTimeByDifficulty", 3);
+      resetDifficulty(selectValue, 3)
       break;
   
     case "hard":
-      localStorage.setItem("difficulty", "hard");
-      increaseInTimeByDifficulty = 2
-      localStorage.setItem("increaseInTimeByDifficulty", 2);
+      resetDifficulty(selectValue, 2)
       break;
 
     default:
@@ -146,6 +148,13 @@ difficultySelect.addEventListener("change", e => {
   }
 });
 
+refreshEl.addEventListener("click", () => {
+  localStorage.removeItem("initialTime")
+  localStorage.removeItem("score")
+  localStorage.removeItem("difficulty")
+  localStorage.removeItem("increaseInTimeByDifficulty")
+  location.reload();
+});
 
 // const word = document.getElementById('word');
 // const text = document.getElementById('text');
