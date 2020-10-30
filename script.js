@@ -17,9 +17,32 @@ let increaseInTimeByDifficulty = localStorage.getItem("increaseInTimeByDifficult
 timeEl.textContent = `${initialTime}s`;
 scoreEl.textContent = score;
 difficultySelect.value = difficulty;
+text.focus();
 
 const getRandomWord = () => {
-  return (words) => {
+  const words = [
+    'sigh',
+    'tense',
+    'airplane',
+    'ball',
+    'pies',
+    'juice',
+    'warlike',
+    'bad',
+    'north',
+    'dependent',
+    'steer',
+    'silver',
+    'highfalutin',
+    'superficial',
+    'quince',
+    'eight',
+    'feeble',
+    'admit',
+    'drag',
+    'loving'
+  ]  
+  return () => {
     return words[Math.floor(Math.random() * words.length)];
   }  
 }
@@ -28,36 +51,20 @@ const showRandomWord = (randomWord) => {
   word.textContent = randomWord;
 }
 
+//// old verson of code it amazing
+// const pipe = (...fns) => (...x) => fns.reduce((f, g) => {
+//   if (Array.isArray(f)) {
+//     return typeof g() === "function" ? g()(...f) : g(...f);
+//   } else {
+//     return typeof g() === "function" ?  g()(f) : g(f);
+//   }
+// }, x);
+
+// simple version of pipe
 const pipe = (...fns) => (...x) => fns.reduce((f, g) => {
-  if (Array.isArray(f)) {
-    return typeof g() === "function" ? g()(...f) : g(...f);
-  } else {
     return typeof g() === "function" ?  g()(f) : g(f);
-  }
 }, x);
 
-const words = [
-  'sigh',
-  'tense',
-  'airplane',
-  'ball',
-  'pies',
-  'juice',
-  'warlike',
-  'bad',
-  'north',
-  'dependent',
-  'steer',
-  'silver',
-  'highfalutin',
-  'superficial',
-  'quince',
-  'eight',
-  'feeble',
-  'admit',
-  'drag',
-  'loving'
-]
 
 const showRandomWordPipeline = pipe(
   getRandomWord,
@@ -92,7 +99,7 @@ const checkWordSanitary = (e) => {
   if (e.target.value === word.innerText) {
     resetScore();
     resetTime();
-    showRandomWordPipeline(words);
+    showRandomWordPipeline();
     e.target.value = "";
   }
 }
@@ -117,7 +124,7 @@ const startTime = setInterval(() => {
   localStorage.setItem("initialTime", initialTime);
 },1000);
 
-showRandomWordPipeline(words);
+showRandomWordPipeline();
 
 settingsBtn.addEventListener("click", () => {
   settings.classList.toggle("hide");
