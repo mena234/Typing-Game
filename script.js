@@ -11,7 +11,7 @@ const difficultySelect = document.getElementById('difficulty');
 let initialTime = localStorage.getItem("initialTime") ? Number(localStorage.getItem("initialTime")) : 10 ;
 let score = localStorage.getItem("score") ? Number(localStorage.getItem("score")) : 0;
 let difficulty = localStorage.getItem("difficulty") ?? "easy";
-let increaseInTimeByDifficulty = 5;
+let increaseInTimeByDifficulty = localStorage.getItem("increaseInTimeByDifficulty") ? Number(localStorage.getItem("increaseInTimeByDifficulty")) : 5;
 
 timeEl.textContent = `${initialTime}s`;
 scoreEl.textContent = score;
@@ -125,16 +125,19 @@ difficultySelect.addEventListener("change", e => {
     case "easy":
       localStorage.setItem("difficulty", "easy");
       increaseInTimeByDifficulty = 5
+      localStorage.setItem("increaseInTimeByDifficulty", 5);
       break;
   
     case "medium":
       localStorage.setItem("difficulty", "medium");
       increaseInTimeByDifficulty = 3
+      localStorage.setItem("increaseInTimeByDifficulty", 3);
       break;
   
     case "hard":
       localStorage.setItem("difficulty", "hard");
       increaseInTimeByDifficulty = 2
+      localStorage.setItem("increaseInTimeByDifficulty", 2);
       break;
 
     default:
